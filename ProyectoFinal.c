@@ -27,7 +27,7 @@ int main()
     char (*tipo_art)[MAX_TIPO_ART] = NULL;
     int (*ventasM)[MESES] = NULL;
     int ventas_totales = 0;
-
+    int Mejor_mes = 0;
 
     do
     {
@@ -37,7 +37,7 @@ int main()
         printf("4.Ver informacion del articulo\n");
         printf("5.Salir\n\n");
 
-        printf("Seleccione la opcion que desea (1-5):\n");
+        printf("Seleccione la opcion que desea (1-5): ");
         scanf("%d", &menu);
 
         switch (menu)
@@ -54,7 +54,7 @@ int main()
                 free(ventasM);
             }
 
-            printf("Ingrese la cantidad de articulos a ingresar al sistema:\n");
+            printf("Ingrese la cantidad de articulos a ingresar al sistema (1-10): ");
             scanf("%d", &n);
 
             // Asignar nueva memoria
@@ -66,18 +66,18 @@ int main()
 
             for (int i = 0; i < n; i++)
             {
-               int Mejor_mes=0;
+                printf("\nIngrese los datos para el articulo %d:\n", i + 1);
 
-                printf("Nombre del articulo:\n");
+                printf("Nombre del articulo: ");
                 scanf("%s", nombre_art[i]);
 
-                printf("Precio de compra de %s:\n", nombre_art[i]);
+                printf("Precio de compra de %s: ", nombre_art[i]);
                 scanf("%d", &precio_de_compra[i]);
 
-                printf("Precio de venta de %s:\n", nombre_art[i]);
+                printf("Precio de venta de %s: ", nombre_art[i]);
                 scanf("%d", &precio_de_venta[i]);
 
-                printf("Ingresar el tipo de producto(Frutas,Carnes,Ropa,Vegetales,Bebidas):\n");
+                printf("Ingresar el tipo de producto (Frutas,Carnes,Ropa,Vegetales,Bebidas): ");
                 scanf("%s", tipo_art[i]);
 
                 printf("Ingrese las ventas por cantidad en los ultimos 12 meses:\n");
@@ -92,32 +92,34 @@ int main()
                 }
 
                 ventas_totales = sumarVentas(ventasM[i]);
-                printf("\nTotal de ventas: %d\n", ventas_totales);
-
+                printf("Total de ventas para %s: %d\n\n", nombre_art[i], ventas_totales);
             }
         }
         break;
 
-        case 2:
-            printf("Funcion disponible proximamente...\n\n");
-            break;
-
-        case 3:
-            printf("Funcion disponible proximamente...\n\n");
-            break;
-
         case 4:
             for (int i = 0; i < n; i++)
             {
-                int Mejor_mes;
-                printf("El articulo %s: \nTiene un precio de compra de: %d\nUn precio de venta de: %d\nEs de tipo: %s\n",
-                       nombre_art[i], precio_de_compra[i], precio_de_venta[i], tipo_art[i]);
+                Mejor_mes = 0;
+                printf("\nInformacion del articulo %d:\n", i + 1);
+                printf("Nombre: %s\n", nombre_art[i]);
+                printf("Precio de compra: %d\n", precio_de_compra[i]);
+                printf("Precio de venta: %d\n", precio_de_venta[i]);
+                printf("Tipo: %s\n", tipo_art[i]);
+                printf("Ventas en los ultimos 12 meses:\n");
+                for (int j = 0; j < MESES; j++)
+                {
+                    printf("Mes %d: %d\n", j + 1, ventasM[i][j]);
+                    if (ventasM[i][j] > ventasM[i][Mejor_mes])
+                    {
+                        Mejor_mes = j;
+                    }
+                }
                 printf("El mes con mas ganancias fue el %d con: %d\n\n", Mejor_mes + 1, ventasM[i][Mejor_mes]);
             }
             break;
 
         case 5:
-
             free(nombre_art);
             free(precio_de_compra);
             free(precio_de_venta);
@@ -129,8 +131,7 @@ int main()
         default:
             printf("Ingrese una opcion valida, intentelo nuevamente (1-5)\n\n");
         }
-    }
-    while (menu != 5);
+    } while (menu != 5);
 
     return 0;
 }
